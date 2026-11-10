@@ -56,3 +56,7 @@ __pycache__/
 *.sqlite3
 *.mdf
 *.ldf
+
+# Office lock/temp files
+~$*
+.qoder-office-xlsx-locks/

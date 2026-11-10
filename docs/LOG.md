@@ -13,6 +13,19 @@
 
 -->
 
+## 2026-11-10 — Bổ sung spec v1.1 + cập nhật Excel
+
+- **Làm:** rà soát khoảng trống của spec v1.0 và chốt bổ sung:
+  - API mới: CUS-11 Refresh Token, CUS-12 Logout, CUS-13 Guest Order Lookup, CUS-14 Cancel Order, AD-7 Upload Image.
+  - Sửa: CUS-8 yêu cầu đăng nhập (chủ đơn/Admin); AD-1 thêm `from/to/topLimit`.
+  - Thêm mục "5. Quy ước chung" 23 điểm (auth, phân quyền, envelope, phân trang, trạng thái đơn, kho, giá, giảm giá, xoá, upload, bảo mật, COD, lỗi, CORS, `refresh_tokens`).
+  - Cập nhật Excel bằng Office tool, verify và lưu thành công.
+- **File:** `docs/specs/SnackShopManagement.xlsx` (v1.1), `docs/specs/archive/SnackShopManagement_v1.0.xlsx`, `docs/API.md`, `docs/DATABASE.md`, `docs/PROJECT.md`, `docs/TASKS.md`, `docs/STATUS.md`, `docs/DECISIONS.md`.
+- **Quyết định:** D-004…D-010.
+- **Tiếp theo:** T-001 chốt stack; T-003 scaffold; T-009 body chi tiết.
+- **Chặn:** file Excel trong `Downloads` đang mở (bị khoá) nên chưa sync đè; bản v1.1 đã có trong repo.
+- **Lưu ý:** Word ERD v1.0 chưa có bảng `refresh_tokens` — cần vẽ lại nếu dùng cho báo cáo.
+
 ## 2026-11-10 — Nhập yêu cầu từ Excel + Word
 
 - **Làm:** trích đặc tả API (Customer CUS-1…10, Admin AD-0…6) từ `SnackShopManagement.xlsx` và ERD 7 bảng từ ảnh trong `SnackManagementDocuments.docx`; copy bản gốc vào `docs/specs/`.

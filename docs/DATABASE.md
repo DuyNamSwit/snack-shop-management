@@ -1,12 +1,14 @@
 # DATABASE — Thiết kế dữ liệu
 
-> **Nguồn sự thật:** ERD trong `docs/specs/SnackManagementDocuments.docx` (ảnh "Cấu trúc các bảng trong database").
-> **Trạng thái:** schema logic đã có; DB engine + kiểu dữ liệu vật lý chờ chốt (T-001 → T-008).
+> **Nguồn:** ERD v1.0 trong `docs/specs/SnackManagementDocuments.docx`.
+> **v1.1 (2026-11-10):** bổ sung bảng `refresh_tokens` — ERD gốc chưa có, cần vẽ lại nếu dùng cho báo cáo.
+> **Trạng thái:** schema logic v1.1 đã chốt; DB engine + kiểu dữ liệu chờ T-001 → T-008.
 
 ## Quan hệ tổng quan
 
 ```
 roles 1──n users 1──n orders 1──n order_items n──1 products n──1 categories
+               users 1──n refresh_tokens
 
 expenses (độc lập, không có FK)
 ```
@@ -27,9 +29,9 @@ expenses (độc lập, không có FK)
 |---|---|
 | `id` | PK |
 | `role_id` | FK → `roles.id` |
-| `username` | |
-| `email` | |
-| `password_hash` | Chỉ lưu hash, không lưu mật khẩu thô |
+| `username` | Unique |
+| `email` | Unique |
+| `password_hash` | Chỉ lưu hash (bcrypt/argon2) |
 | `full_name` | |
 | `phone_number` | |
 | `address` | |
@@ -55,24 +57,24 @@ expenses (độc lập, không có FK)
 | `import_price` | Giá nhập — cơ sở tính tiền vốn |
 | `selling_price` | Giá bán |
 | `stock_quantity` | Tồn kho |
-| `image_url` | |
-| `is_active` | Ẩn / ngừng bán |
+| `image_url` | Đường dẫn tương đối (`/uploads/products/...`) |
+| `is_active` | Ẩn / ngừng bán (xoá mềm) |
 | `created_at` | |
-| `discount_price` | Giảm giá theo số tiền |
-| `discount_percent` | Giảm giá theo % |
+| `discount_price` | Giảm theo số tiền |
+| `discount_percent` | Giảm theo % (0–100) |
 
 ### `orders`
 
 | Cột | Ghi chú |
 |---|---|
 | `id` | PK |
-| `user_id` | FK → `users.id`; khách vãng lai có thể NULL (chưa chốt) |
-| `customer_name` | Lưu trực tiếp để hỗ trợ khách vãng lai |
-| `customer_phone` | |
-| `customer_address` | |
+| `user_id` | FK → `users.id`; **NULL** nếu khách vãng lai |
+| `customer_name` | Bắt buộc |
+| `customer_phone` | Bắt buộc |
+| `customer_address` | Bắt buộc |
 | `note` | |
-| `total_amount` | Tổng tiền đơn |
-| `status` | `Pending` → `Shipping` → `Completed` / `Cancelled` |
+| `total_amount` | Tổng tiền đơn (VND, số nguyên) |
+| `status` | `Pending` / `Shipping` / `Completed` / `Cancelled` |
 | `created_at` | |
 
 ### `order_items`
@@ -82,9 +84,9 @@ expenses (độc lập, không có FK)
 | `id` | PK |
 | `order_id` | FK → `orders.id` |
 | `product_id` | FK → `products.id` |
-| `quantity` | |
+| `quantity` | ≥ 1 |
 | `unit_price` | Giá bán **tại thời điểm đặt** |
-| `unit_import_price` | Giá nhập **tại thời điểm đặt** — dùng tính lợi nhuận |
+| `unit_import_price` | Giá nhập **tại thời điểm đặt** — tính lợi nhuận |
 
 ### `expenses`
 
@@ -96,23 +98,36 @@ expenses (độc lập, không có FK)
 | `expense_date` | |
 | `note` | |
 
-## Quy tắc suy ra từ spec
+### `refresh_tokens` (v1.1 — ngoài ERD gốc)
 
-- `order_items` chụp lại giá bán + giá nhập tại thời điểm đặt → sửa giá sản phẩm sau này không làm sai báo cáo cũ.
-- Lợi nhuận ròng (AD-1) = doanh thu − tiền vốn (`unit_import_price`) − chi phí (`expenses`).
-- Đơn hàng lưu thông tin khách trực tiếp → hỗ trợ khách vãng lai.
-- Không có bảng phiếu nhập / nhà cung cấp: tồn kho được chỉnh qua cập nhật sản phẩm (AD-2).
+| Cột | Ghi chú |
+|---|---|
+| `id` | PK |
+| `user_id` | FK → `users.id` |
+| `token_hash` | Hash của refresh token, không lưu token thô |
+| `expires_at` | Hết hạn sau 7 ngày |
+| `revoked_at` | NULL nếu còn hiệu lực; set khi logout/rotate |
+| `created_at` | |
 
-## Câu hỏi chưa chốt (T-007)
+## Quy tắc đã chốt (v1.1)
 
-1. `orders.user_id` của khách vãng lai: NULL hay tạo user ẩn?
-2. Có cả `discount_price` và `discount_percent`: ưu tiên cái nào? Cho phép nhập cả hai?
-3. Trừ `stock_quantity` lúc tạo đơn hay lúc chuyển `Completed`? Huỷ đơn có hoàn kho không?
-4. Xoá sản phẩm (AD-2): xoá cứng hay chỉ set `is_active = false`?
-5. DB engine + kiểu dữ liệu (ERD hiển thị schema `public` → gợi ý PostgreSQL, cần xác nhận).
+- **Giá:** `order_items` chụp `unit_price` + `unit_import_price` tại thời điểm đặt; `total_amount = Σ(unit_price × quantity)`; không phí ship/thuế.
+- **Lợi nhuận ròng** (AD-1) = doanh thu − tiền vốn (`unit_import_price`) − chi phí (`expenses`).
+- **Giảm giá:** nếu `discount_percent > 0` dùng %; ngược lại dùng `discount_price`. Giá cuối = `max(0, selling_price - giảm)`. Validate 0–100% và `discount_price ≤ selling_price`.
+- **Khách vãng lai:** `orders.user_id = NULL`; bắt buộc tên/SĐT/địa chỉ.
+- **Tồn kho:** kiểm tra + trừ ngay khi tạo đơn trong 1 transaction; thiếu → 409 `INSUFFICIENT_STOCK`; huỷ đơn → hoàn kho.
+- **Huỷ đơn:** khách chỉ huỷ khi `Pending`; Admin huỷ được khi chưa `Completed`.
+- **Sửa đơn:** không hỗ trợ — khách huỷ rồi đặt lại.
+- **Xoá dữ liệu:** sản phẩm xoá mềm (`is_active = false`); danh mục chặn xoá nếu còn sản phẩm; chi phí xoá cứng; người dùng chỉ khoá/mở.
+- **Token:** refresh token lưu hash; logout thu hồi token hiện tại; mỗi lần refresh thì xoay vòng (revoke cũ, phát mới).
+
+## Còn mở
+
+- DB engine + kiểu dữ liệu cụ thể (ERD hiển thị schema `public` → gợi ý PostgreSQL, cần xác nhận ở T-001).
 
 ## Lịch sử thay đổi
 
 | Ngày | Thay đổi |
 |---|---|
-| 2026-11-10 | Nhập schema từ ERD file Word (7 bảng) |
+| 2026-11-10 | v1.1: thêm `refresh_tokens`; chốt quy tắc kho/giá/giảm giá/xoá/token |
+| 2026-11-10 | Nhập schema từ ERD v1.0 (7 bảng) |

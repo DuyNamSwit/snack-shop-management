@@ -17,8 +17,9 @@ Website bán bánh kẹo / đồ ăn vặt: khách đặt hàng online + admin q
 
 ## Đặc tả gốc
 
-- [`docs/specs/SnackShopManagement.xlsx`](docs/specs/SnackShopManagement.xlsx) — API spec: Customer (CUS-1…10) + Admin (AD-0…6).
-- [`docs/specs/SnackManagementDocuments.docx`](docs/specs/SnackManagementDocuments.docx) — ERD 7 bảng.
+- [`docs/specs/SnackShopManagement.xlsx`](docs/specs/SnackShopManagement.xlsx) — API spec **v1.1**: Customer (CUS-1…14) + Admin (AD-0…7) + quy ước chung.
+- [`docs/specs/SnackManagementDocuments.docx`](docs/specs/SnackManagementDocuments.docx) — ERD v1.0 (7 bảng; v1.1 thêm `refresh_tokens`).
+- Bản v1.0 được lưu tại `docs/specs/archive/`.
 
 Bản mô tả dễ đọc: [`docs/API.md`](docs/API.md), [`docs/DATABASE.md`](docs/DATABASE.md).
 
@@ -33,7 +34,7 @@ Bản mô tả dễ đọc: [`docs/API.md`](docs/API.md), [`docs/DATABASE.md`](d
 
 Xem [`docs/STATUS.md`](docs/STATUS.md).
 
-- Đã có đặc tả DB + API, **chưa có code**.
+- Đã có spec v1.1 (DB + API + quy ước), **chưa có code**.
 - Đang chờ chốt tech stack (T-001).
 
 ## Chạy dự án

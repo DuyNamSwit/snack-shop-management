@@ -17,13 +17,16 @@
 - Tên biến/hàm rõ nghĩa, không viết tắt khó hiểu.
 - Không để code chết, không giữ lại code cũ "để tham khảo".
 
-## API (đề xuất — chốt ở T-005)
+## API (đã chốt v1.1 — chi tiết ở `docs/API.md`)
 
-- REST, prefix `/api/v1`.
+- REST, prefix `/api` (không version).
+- Auth: JWT access token 8 giờ + refresh token 7 ngày; header `Authorization: Bearer <accessToken>`.
 - Thành công: `{ "success": true, "data": ..., "message": "..." }`
-- Lỗi: `{ "success": false, "message": "...", "errors": [...] }`
-- Status code: 400 validate, 401 chưa đăng nhập, 403 không có quyền, 404 không thấy, 409 trùng dữ liệu, 500 lỗi server.
-- Ngày giờ: ISO 8601 (UTC).
+- Lỗi: `{ "success": false, "message": "...", "errors": [{ "field": "...", "message": "..." }] }`
+- Danh sách: `data = { items, page, pageSize, totalItems, totalPages }`; `page` mặc định 1, `pageSize` mặc định 20 (tối đa 100).
+- Trạng thái đơn: `Pending` / `Shipping` / `Completed` / `Cancelled`.
+- Status code: 400 validate, 401 chưa đăng nhập/hết token, 403 không có quyền, 404 không thấy, 409 trùng dữ liệu/thiếu kho, 429 quá nhiều request, 500 lỗi server.
+- Ngày giờ: ISO 8601; tiền VND là số nguyên.
 - FE gọi API qua 1 lớp service duy nhất, không rải `fetch` trong component.
 
 ## Database
