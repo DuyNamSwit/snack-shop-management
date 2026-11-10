@@ -50,6 +50,7 @@
 - Không trả entity EF ra API; luôn map sang DTO.
 - Async + `CancellationToken`; không dùng `.Result` / `.Wait()`.
 - EF: `AsNoTracking()` cho query đọc; projection khi chỉ cần vài cột; DbContext scoped.
-- Không sửa file scaffold (`Models/Entities`, `Data/AppDbContext.cs`); dùng `partial class` nếu cần mở rộng.
+- Không sửa/thêm file trong `Data/AppDbContext.cs` và `Models/Entities/*`; nếu cần mở rộng, hỏi user trước (chỉ dùng `partial class` khi được duyệt).
+- Không chạy lại `dotnet ef dbcontext scaffold -f` khi chưa được phép.
 - Validate input ở biên (DTO/DataAnnotations), không tin dữ liệu từ client.
 - Không trả stack trace / thông tin nội bộ ra response lỗi.

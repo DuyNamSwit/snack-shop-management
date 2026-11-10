@@ -47,6 +47,7 @@ Nếu tài liệu và code mâu thuẫn: **code là sự thật hiện tại**, 
 ## 4. Luật bất di bất dịch
 
 - Không tự đổi scope hoặc chọn công nghệ thay user — chưa chốt thì ghi vào mục "Cần user quyết" của `STATUS.md`.
+- **Không chạm file DB-generated:** không sửa/thêm gì trong `backend/SnackShop.Api/Data/AppDbContext.cs` và `backend/SnackShop.Api/Models/Entities/*`; không chạy lại `dotnet ef dbcontext scaffold -f` — trừ khi user yêu cầu rõ.
 - `docs/specs/` là bản gốc của user: chỉ đọc, không sửa. Muốn đổi nghiệp vụ → hỏi user và ghi quyết định mới vào `DECISIONS.md`.
 - Không sửa entry cũ trong `LOG.md`; chỉ thêm mới.
 - Không chạy lệnh phá huỷ (reset --hard, xoá DB, rm -rf...) khi chưa được phép.
