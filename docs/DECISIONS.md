@@ -5,7 +5,7 @@ Ghi lại **quyết định** kèm lý do, để sau này không phải đoán "
 | ID | Ngày | Quyết định | Lý do | Phương án đã cân nhắc | Trạng thái |
 |---|---|---|---|---|---|
 | D-001 | 2026-11-10 | Dùng harness docs (`AGENTS.md` + `docs/`) làm nguồn ngữ cảnh cho AI | AI không quên giữa các phiên | Chỉ dựa vào chat; memory tool | accepted |
-| D-002 | 2026-11-10 | Tech stack FE/BE/DB | — | — | **pending** |
+| D-002 | 2026-11-10 | Tech stack: BE = ASP.NET Core (.NET 10); DB = PostgreSQL (Npgsql); FE = TBD | BE quen C#; DB đã có sẵn | SQL Server, Node, Spring Boot | **partial** |
 | D-003 | 2026-11-10 | Spec gốc (`docs/specs/*`) là nguồn sự thật | Yêu cầu gốc của user, tránh AI suy diễn | Giữ draft tự đề xuất | accepted |
 | D-004 | 2026-11-10 | Auth: JWT access 8h + refresh token 7d, bảng `refresh_tokens`, logout thu hồi, rotate khi refresh | Có logout/refresh đúng nghĩa, không lưu token thô | Access token dài hạn không refresh; session | accepted |
 | D-005 | 2026-11-10 | Trừ kho khi tạo đơn, hoàn khi huỷ; thiếu kho → 409; không sửa đơn; khách huỷ chỉ khi `Pending` | Chống bán quá tồn; đơn giản, không cần luồng sửa đơn | Trừ kho lúc `Completed`; cho sửa đơn | accepted |
@@ -14,6 +14,8 @@ Ghi lại **quyết định** kèm lý do, để sau này không phải đoán "
 | D-008 | 2026-11-10 | `GET /orders/{id}` chỉ chủ đơn/Admin; khách vãng lai dùng `POST /orders/lookup` (orderId + phone, 5 lần/phút/IP); rate limit login 5 lần/phút/IP; admin không tự khoá | Chặn đoán ID xem đơn người khác | Để công khai; dùng mã đơn ngẫu nhiên | accepted |
 | D-009 | 2026-11-10 | Chuẩn API: envelope `{success,data,message}`, phân trang `page/pageSize` (20, max 100), trạng thái đơn là chuỗi, mã lỗi 400/401/403/404/409/429/500 | FE/BE thống nhất, dễ sinh code | Trả mảng trần; không phân trang | accepted |
 | D-010 | 2026-11-10 | Upload ảnh local: multipart `file`, ≤5MB, jpg/png/webp, trả URL tương đối `/uploads/products/...` | Không phụ thuộc dịch vụ ngoài | Cloudinary/S3 | accepted |
+| D-011 | 2026-11-10 | DB-first: DB là nguồn sự thật; dùng `dotnet ef dbcontext scaffold` sinh `AppDbContext` + entities, **không** migration, không sửa file generated | DB đã có sẵn cấu trúc + dữ liệu | Code-first + migration | accepted |
+| D-012 | 2026-11-10 | Backend 1 project: Controllers → Services → EF Core, dùng DTO, không Repository/multi-project | KISS, phù hợp đồ án cá nhân | Clean Architecture nhiều project | accepted |
 
 ## Thứ tự ưu tiên khi mâu thuẫn
 
@@ -23,16 +25,14 @@ Ghi lại **quyết định** kèm lý do, để sau này không phải đoán "
 
 Code lệch spec = bug (trừ khi user đổi ý và đã ghi quyết định mới).
 
-## D-002 — Chưa chốt
+## D-002 — Còn chốt
 
-| Thành phần | Phương án đang cân nhắc |
-|---|---|
-| Backend | ASP.NET Core Web API, Node.js (Express/NestJS), Java Spring Boot |
-| Frontend | React + Vite, Next.js, Vue |
-| Database | PostgreSQL, SQL Server, MySQL, SQLite |
+Đã chốt:
+- **Backend:** ASP.NET Core Web API, .NET 10 (`net10.0`).
+- **Database:** PostgreSQL + Npgsql (theo schema `public` trong ERD) — cần xác nhận khi có connection string.
 
-Tiêu chí: quen tay nhất, chạy local trên Windows dễ, ít cấu hình.
+Còn chốt:
+- **Frontend:** React + Vite, Next.js hoặc Vue.
+- Xác nhận DB engine thực tế (PostgreSQL hay SQL Server).
 
-Gợi ý từ spec: ERD hiển thị schema `public` → nhiều khả năng PostgreSQL.
-
-→ Khi user chốt: cập nhật dòng D-002 (`accepted`), `PROJECT.md`, `STATUS.md`, rồi làm T-003.
+→ Khi user chốt: cập nhật dòng D-002 (`accepted`), `PROJECT.md`, `STATUS.md`, rồi làm T-010.

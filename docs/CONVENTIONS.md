@@ -43,8 +43,13 @@
 - Tách `pages/`, `components/`, `services/`, `types/`.
 - Không hardcode URL API — dùng biến môi trường (`VITE_API_URL` hoặc tương đương).
 
-## Backend
+## Backend (C# / ASP.NET Core)
 
-- Controller/route mỏng, logic nghiệp vụ đặt trong service (chốt lại theo stack).
-- Validate input ở biên (API), không tin dữ liệu từ client.
+- Controller mỏng: nhận DTO → gọi Service → trả DTO; không truy vấn EF trực tiếp trong controller.
+- Service chứa nghiệp vụ; không tạo Repository layer (KISS).
+- Không trả entity EF ra API; luôn map sang DTO.
+- Async + `CancellationToken`; không dùng `.Result` / `.Wait()`.
+- EF: `AsNoTracking()` cho query đọc; projection khi chỉ cần vài cột; DbContext scoped.
+- Không sửa file scaffold (`Models/Entities`, `Data/AppDbContext.cs`); dùng `partial class` nếu cần mở rộng.
+- Validate input ở biên (DTO/DataAnnotations), không tin dữ liệu từ client.
 - Không trả stack trace / thông tin nội bộ ra response lỗi.

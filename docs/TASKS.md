@@ -12,15 +12,17 @@ Quy tắc:
 
 | ID | Task | Module | Trạng thái | Ghi chú |
 |---|---|---|---|---|
-| T-001 | Chốt tech stack FE/BE/DB | setup | todo | User quyết (D-002) |
-| T-002 | Chốt phạm vi MVP & tác nhân | product | done | Theo spec v1.0 |
-| T-003 | Scaffold `frontend/` + `backend/` | setup | blocked | Sau T-001 |
-| T-004 | Schema logic từ ERD | database | done | 7 bảng v1.0, xem DATABASE.md |
+| T-001 | Chốt tech stack FE/BE/DB | setup | doing | BE: ASP.NET Core ✅; DB: PostgreSQL (tạm chốt); FE: TBD |
+| T-002 | Chốt phạm vi MVP & tác nhân | product | done | Theo spec v1.1 |
+| T-003 | Scaffold backend ASP.NET Core | setup | done | .NET 10, packages, folders, build 0 warning/error |
+| T-004 | Schema logic từ ERD | database | done | DB thật đã có — chuyển sang DB-first |
 | T-005 | Route/method API | api | done | Spec v1.1, xem API.md |
-| T-006 | Viết `docs/SETUP.md` | setup | blocked | Sau T-003 |
-| T-007 | Chốt câu hỏi nghiệp vụ mở | product | done | Đã chốt trong spec v1.1 (D-004…D-010) |
-| T-008 | Schema vật lý + migration + seed | database | blocked | Gồm 8 bảng (thêm `refresh_tokens`); sau T-001 |
+| T-006 | Viết `docs/SETUP.md` | setup | done | Có lệnh chạy + scaffold DB-first |
+| T-007 | Chốt câu hỏi nghiệp vụ mở | product | done | D-004…D-010 |
+| T-008 | Scaffold DbContext + entities từ DB | database | blocked | Cần connection string; lệnh ở SETUP.md |
 | T-009 | Đặc tả request/response body | api | todo | Ưu tiên AD-1, CUS-6, CUS-13 |
+| T-010 | Scaffold frontend | setup | blocked | Chờ chọn FE stack |
+| T-011 | Cấu hình DbContext + JWT + CORS + static files | setup | blocked | Sau T-008 |
 
 ## Phase 1 — Customer Module
 

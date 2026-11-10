@@ -60,3 +60,7 @@ __pycache__/
 # Office lock/temp files
 ~$*
 .qoder-office-xlsx-locks/
+
+# Backend uploads (giữ .gitkeep)
+backend/SnackShop.Api/wwwroot/uploads/products/*
+!backend/SnackShop.Api/wwwroot/uploads/products/.gitkeep

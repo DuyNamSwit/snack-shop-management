@@ -13,6 +13,21 @@
 
 -->
 
+## 2026-11-10 — Scaffold backend ASP.NET Core (DB-first)
+
+- **Làm:**
+  - Tạo solution `backend/SnackShop.slnx` + project `SnackShop.Api` (`net10.0`, controllers).
+  - Cài packages: EF Core Design 10.0.14, Npgsql EF Core 10.0.3, Swashbuckle 10.3.1, JwtBearer 10.0.14, BCrypt.Net-Next 4.2.0.
+  - Tạo folder skeleton: Controllers, Services, DTOs, Models/Entities, Data, Middleware, Extensions, Helpers, wwwroot/uploads/products.
+  - Cài `dotnet-ef` local tool, khởi tạo user-secrets, thêm `global.json`.
+  - Viết `Program.cs` tối thiểu (controllers + Swagger), `appsettings.json` có ConnectionStrings/Jwt để trống.
+  - Xoá code mẫu WeatherForecast; build 0 warning / 0 error.
+  - Cập nhật `docs/SETUP.md` với lệnh chạy và lệnh scaffold DB-first.
+- **File:** `backend/*`, `.gitignore`, `docs/SETUP.md`, `docs/PROJECT.md`, `docs/DECISIONS.md`, `docs/TASKS.md`, `docs/STATUS.md`.
+- **Quyết định:** D-011 (DB-first), D-012 (1 project, không Repository); cập nhật D-002.
+- **Tiếp theo:** T-008 scaffold entities (cần connection string), T-011 cấu hình, T-101 auth.
+- **Chặn:** chưa có connection string DB; FE chưa chọn stack.
+
 ## 2026-11-10 — Bổ sung spec v1.1 + cập nhật Excel
 
 - **Làm:** rà soát khoảng trống của spec v1.0 và chốt bổ sung:

@@ -55,9 +55,8 @@ Chi tiết endpoint: `docs/API.md`. Chi tiết bảng: `docs/DATABASE.md`.
 
 ## Tech stack
 
-> **Chưa chốt** — xem `docs/DECISIONS.md` (D-002).
-
-- Frontend: TBD
-- Backend: TBD
-- Database: TBD (ERD hiển thị schema `public` → gợi ý PostgreSQL, cần xác nhận)
-- Môi trường dev: Windows, Node.js v24 (nếu FE dùng Node)
+- **Backend:** ASP.NET Core Web API (.NET 10), EF Core 10 (DB-first)
+- **Database:** PostgreSQL (Npgsql) — DB đã có sẵn, scaffold entity bằng `dotnet ef dbcontext scaffold`
+- **Frontend:** TBD
+- **Thư viện BE:** EF Core Design, Npgsql EF Core, Swashbuckle, JwtBearer, BCrypt.Net-Next
+- **Môi trường dev:** Windows, .NET SDK 10.0.402, Node.js v24 (nếu FE dùng Node)

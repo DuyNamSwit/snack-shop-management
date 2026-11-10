@@ -7,7 +7,7 @@ Website bán bánh kẹo / đồ ăn vặt: khách đặt hàng online + admin q
 ```
 .
 ├── frontend/        # giao diện người dùng (chưa khởi tạo)
-├── backend/         # API + xử lý nghiệp vụ (chưa khởi tạo)
+├── backend/         # ASP.NET Core Web API (.NET 10) — đã scaffold
 ├── docs/            # harness + đặc tả dự án
 │   ├── specs/       # file gốc: Excel (API spec) + Word (ERD)
 │   └── *.md         # STATUS, TASKS, LOG, DECISIONS, API, DATABASE, ...
@@ -34,9 +34,19 @@ Bản mô tả dễ đọc: [`docs/API.md`](docs/API.md), [`docs/DATABASE.md`](d
 
 Xem [`docs/STATUS.md`](docs/STATUS.md).
 
-- Đã có spec v1.1 (DB + API + quy ước), **chưa có code**.
-- Đang chờ chốt tech stack (T-001).
+- Spec v1.1 đã chốt (DB + API + quy ước).
+- Backend ASP.NET Core (.NET 10) đã scaffold — **chưa có code nghiệp vụ**.
+- Frontend chưa scaffold (chờ chọn stack).
 
-## Chạy dự án
+## Chạy backend
 
-Chưa có — `frontend/` và `backend/` đang trống. Hướng dẫn sẽ nằm ở [`docs/SETUP.md`](docs/SETUP.md) sau khi scaffold.
+```bash
+cd backend
+dotnet tool restore
+dotnet build
+dotnet run --project SnackShop.Api
+```
+
+- API: `http://localhost:5261`
+- Swagger: `http://localhost:5261/swagger`
+- Secrets + scaffold DB-first: xem [`docs/SETUP.md`](docs/SETUP.md)
