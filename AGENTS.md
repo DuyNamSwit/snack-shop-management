@@ -22,8 +22,9 @@
 | `docs/DATABASE.md` | "Dữ liệu gồm những gì?" | Khi làm DB / entity | Khi schema đổi |
 | `docs/API.md` | "FE gọi BE thế nào?" | Khi làm API / FE | Khi endpoint đổi |
 | `docs/CONVENTIONS.md` | "Viết code theo chuẩn nào?" | Trước khi viết code | Khi chuẩn đổi |
+| `docs/specs/*` | "Yêu cầu gốc là gì?" | Khi cần đối chiếu spec | **Không sửa** — đây là file gốc của user |
 
-Nếu tài liệu và code mâu thuẫn: **code là sự thật hiện tại**, nhưng phải sửa lại tài liệu cho khớp ngay trong phiên đó.
+Nếu tài liệu và code mâu thuẫn: **code là sự thật hiện tại**, nhưng phải sửa lại tài liệu cho khớp ngay trong phiên đó. Nếu code/tài liệu mâu thuẫn với `docs/specs/`: **spec thắng** — code lệch spec là bug.
 
 ## 3. Quy trình mỗi phiên
 
@@ -46,6 +47,7 @@ Nếu tài liệu và code mâu thuẫn: **code là sự thật hiện tại**, 
 ## 4. Luật bất di bất dịch
 
 - Không tự đổi scope hoặc chọn công nghệ thay user — chưa chốt thì ghi vào mục "Cần user quyết" của `STATUS.md`.
+- `docs/specs/` là bản gốc của user: chỉ đọc, không sửa. Muốn đổi nghiệp vụ → hỏi user và ghi quyết định mới vào `DECISIONS.md`.
 - Không sửa entry cũ trong `LOG.md`; chỉ thêm mới.
 - Không chạy lệnh phá huỷ (reset --hard, xoá DB, rm -rf...) khi chưa được phép.
 - Không commit / push khi user chưa yêu cầu.

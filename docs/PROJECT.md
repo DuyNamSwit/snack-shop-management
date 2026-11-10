@@ -2,32 +2,53 @@
 
 ## Mục tiêu
 
-Website quản lý cửa hàng bánh kẹo / đồ ăn vặt: quản lý sản phẩm, tồn kho, bán hàng, khách hàng và báo cáo.
+Website bán bánh kẹo / đồ ăn vặt, gồm 2 phần: khách hàng đặt hàng online và admin quản trị cửa hàng.
+
+## Nguồn yêu cầu
+
+- `docs/specs/SnackShopManagement.xlsx` — đặc tả API (Customer + Admin).
+- `docs/specs/SnackManagementDocuments.docx` — ERD "Cấu trúc các bảng trong database".
+
+Hai file này là **nguồn sự thật**; tài liệu trong `docs/` phải khớp với chúng.
 
 ## Hình thức
 
-Dự án cá nhân — 1 dev (chủ dự án) + AI hỗ trợ. Không ràng buộc deadline đồ án nhóm.
+Dự án cá nhân — 1 dev (chủ dự án) + AI hỗ trợ.
 
-## Tác nhân (draft — chờ chốt T-002)
+## Tác nhân
 
-| Tác nhân | Mô tả | Quyền chính |
-|---|---|---|
-| Chủ cửa hàng (Admin) | Toàn quyền hệ thống | Quản lý sản phẩm, nhân viên, xem báo cáo |
-| Nhân viên bán hàng | Vận hành hằng ngày | Bán hàng (POS), nhập hàng, xem tồn kho |
-| Khách hàng | (tuỳ chọn) Mua online | Xem sản phẩm, đặt hàng — chưa chắc có trong MVP |
+| Tác nhân | Quyền chính |
+|---|---|
+| Khách hàng (Customer) | Đăng ký / đăng nhập, xem sản phẩm & danh mục, đặt hàng (kể cả vãng lai), xem lịch sử & trạng thái đơn, sửa hồ sơ, đổi mật khẩu |
+| Quản trị viên (Admin) | Đăng nhập riêng, xem dashboard báo cáo, quản lý sản phẩm / danh mục / đơn hàng / người dùng / chi phí |
 
-## Phạm vi MVP (draft — chờ chốt T-002)
+## Phạm vi MVP (đã chốt theo spec)
 
-- [ ] Đăng nhập + phân quyền
-- [ ] Quản lý danh mục + sản phẩm
-- [ ] Quản lý tồn kho + phiếu nhập hàng
-- [ ] Bán hàng (POS) + hoá đơn
-- [ ] Quản lý khách hàng
-- [ ] Báo cáo doanh thu
+**Customer Module** — 10 chức năng:
+- Đăng ký, đăng nhập
+- Xem danh sách / chi tiết sản phẩm, lọc & sắp xếp
+- Xem danh mục
+- Đặt hàng (đã đăng nhập hoặc vãng lai)
+- Lịch sử đơn, xem trạng thái đơn
+- Cập nhật hồ sơ, đổi mật khẩu
 
-## Ngoài phạm vi (draft)
+**Admin Module** — 7 nhóm chức năng:
+- Đăng nhập admin
+- Dashboard báo cáo (doanh thu, tiền vốn, chi phí, lợi nhuận, top bán chạy)
+- Quản lý sản phẩm (CRUD + giảm giá + tồn kho)
+- Quản lý danh mục (CRUD)
+- Quản lý đơn hàng (danh sách, chi tiết, đổi trạng thái)
+- Quản lý người dùng (danh sách, khóa/mở)
+- Quản lý chi phí phát sinh (CRUD)
 
-- Thanh toán online, giao hàng, khuyến mãi phức tạp, đa chi nhánh, app mobile.
+Chi tiết endpoint: `docs/API.md`. Chi tiết bảng: `docs/DATABASE.md`.
+
+## Ngoài phạm vi (theo spec hiện tại)
+
+- Nhà cung cấp / phiếu nhập hàng (không có trong ERD).
+- Nhân viên bán hàng, POS tại quầy, đa chi nhánh.
+- Thanh toán online, vận chuyển, app mobile.
+- Hệ thống khuyến mãi phức tạp (chỉ giảm giá theo từng sản phẩm).
 
 ## Tech stack
 
@@ -35,13 +56,5 @@ Dự án cá nhân — 1 dev (chủ dự án) + AI hỗ trợ. Không ràng bu�
 
 - Frontend: TBD
 - Backend: TBD
-- Database: TBD
-- Chạy local trên Windows; Node.js v24 đã có sẵn (nếu FE dùng Node).
-
-## Cấu trúc repo
-
-```
-frontend/   # FE
-backend/    # BE
-docs/       # harness
-```
+- Database: TBD (ERD hiển thị schema `public` → gợi ý PostgreSQL, cần xác nhận)
+- Môi trường dev: Windows, Node.js v24 (nếu FE dùng Node)

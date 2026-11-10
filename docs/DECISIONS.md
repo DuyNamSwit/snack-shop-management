@@ -4,19 +4,28 @@ Ghi lại **quyết định** kèm lý do, để sau này không phải đoán "
 
 | ID | Ngày | Quyết định | Lý do | Phương án đã cân nhắc | Trạng thái |
 |---|---|---|---|---|---|
-| D-001 | 2026-11-10 | Dùng harness docs (`AGENTS.md` + `docs/`) làm nguồn sự thật để AI đọc mỗi phiên | AI không quên ngữ cảnh giữa các phiên; user chỉ cần trỏ AI đọc | Chỉ dựa vào chat; dùng memory tool | accepted |
+| D-001 | 2026-11-10 | Dùng harness docs (`AGENTS.md` + `docs/`) làm nguồn ngữ cảnh cho AI | AI không quên giữa các phiên; user chỉ cần trỏ AI đọc | Chỉ dựa vào chat; memory tool | accepted |
 | D-002 | 2026-11-10 | Tech stack FE/BE/DB | — | — | **pending** |
+| D-003 | 2026-11-10 | Spec gốc (`docs/specs/*.xlsx`, `*.docx`) là nguồn sự thật về nghiệp vụ, DB, API | Đây là yêu cầu gốc của user; tránh AI tự suy diễn | Giữ bản draft tự đề xuất | accepted |
+
+## Thứ tự ưu tiên khi mâu thuẫn
+
+1. Spec gốc trong `docs/specs/`.
+2. Tài liệu mô tả trong `docs/` (DATABASE, API, PROJECT).
+3. Ghi chú miệng trong chat.
+
+Code lệch spec = bug (trừ khi user đổi ý và đã ghi lại quyết định mới).
 
 ## D-002 — Chưa chốt
 
-Các lựa chọn đang cân nhắc:
-
-| Thành phần | Phương án |
+| Thành phần | Phương án đang cân nhắc |
 |---|---|
 | Backend | ASP.NET Core Web API, Node.js (Express/NestJS), Java Spring Boot |
 | Frontend | React + Vite, Next.js, Vue |
-| Database | SQL Server, MySQL, PostgreSQL, SQLite |
+| Database | PostgreSQL, SQL Server, MySQL, SQLite |
 
-Tiêu chí: quen tay nhất, chạy local trên Windows dễ, ít cấu hình, đủ cho demo.
+Tiêu chí: quen tay nhất, chạy local trên Windows dễ, ít cấu hình.
 
-→ Khi user chốt: cập nhật dòng D-002 (trạng thái `accepted`), cập nhật `PROJECT.md` và `TASKS.md` (T-001).
+Gợi ý từ spec: ERD hiển thị schema `public` → nhiều khả năng PostgreSQL.
+
+→ Khi user chốt: cập nhật dòng D-002 (`accepted`), `PROJECT.md`, `STATUS.md`, rồi làm T-003.

@@ -1,46 +1,118 @@
 # DATABASE — Thiết kế dữ liệu
 
-> Trạng thái: **draft** — chưa chốt. Cập nhật ngay khi schema thật được tạo (T-004).
-> Khi có stack: ghi rõ nơi chứa schema/migration (ví dụ `backend/db/init.sql` hoặc thư mục migrations).
+> **Nguồn sự thật:** ERD trong `docs/specs/SnackManagementDocuments.docx` (ảnh "Cấu trúc các bảng trong database").
+> **Trạng thái:** schema logic đã có; DB engine + kiểu dữ liệu vật lý chờ chốt (T-001 → T-008).
 
-## Thực thể dự kiến
+## Quan hệ tổng quan
 
-| Bảng | Mô tả | Bắt buộc? |
-|---|---|---|
-| `users` | Tài khoản đăng nhập (admin, nhân viên) | Có |
-| `categories` | Danh mục sản phẩm (bánh, kẹo, nước...) | Có |
-| `products` | Sản phẩm snack | Có |
-| `suppliers` | Nhà cung cấp | Tuỳ |
-| `purchase_orders` | Phiếu nhập hàng | Có |
-| `purchase_order_items` | Chi tiết phiếu nhập | Có |
-| `customers` | Khách hàng | Có |
-| `orders` | Hoá đơn bán hàng | Có |
-| `order_items` | Chi tiết hoá đơn | Có |
-| `promotions` | Khuyến mãi | Chưa chắc |
+```
+roles 1──n users 1──n orders 1──n order_items n──1 products n──1 categories
 
-## Gợi ý cột (chưa chốt)
+expenses (độc lập, không có FK)
+```
 
-**products:** `id`, `sku`, `name`, `category_id`, `price`, `cost_price`, `stock_quantity`, `unit`, `image_url`, `is_active`, `created_at`, `updated_at`
+## Bảng & cột
 
-**orders:** `id`, `code`, `customer_id` (nullable), `user_id`, `total_amount`, `discount_amount`, `paid_amount`, `status`, `created_at`
+### `roles`
 
-**order_items:** `id`, `order_id`, `product_id`, `quantity`, `unit_price`, `subtotal`
+| Cột | Ghi chú |
+|---|---|
+| `id` | PK |
+| `name` | Tên vai trò (Admin, Customer) |
+| `description` | Mô tả |
 
-## Quan hệ chính
+### `users`
 
-- `categories 1—n products`
-- `orders 1—n order_items n—1 products`
-- `purchase_orders 1—n purchase_order_items n—1 products`
-- `customers 1—n orders`
-- `users 1—n orders` (nhân viên lập hoá đơn)
+| Cột | Ghi chú |
+|---|---|
+| `id` | PK |
+| `role_id` | FK → `roles.id` |
+| `username` | |
+| `email` | |
+| `password_hash` | Chỉ lưu hash, không lưu mật khẩu thô |
+| `full_name` | |
+| `phone_number` | |
+| `address` | |
+| `is_active` | Khóa / mở khóa tài khoản |
+| `created_at` | |
 
-## Quy tắc
+### `categories`
 
-- Tồn kho chỉ thay đổi qua phiếu nhập và hoá đơn bán — không sửa tay tuỳ tiện (chốt lại với user).
-- Mọi thay đổi cấu trúc phải ghi vào file này kèm ngày.
+| Cột | Ghi chú |
+|---|---|
+| `id` | PK |
+| `name` | |
+| `description` | |
 
-## Lịch sử thay đổi schema
+### `products`
 
-| Ngày | Thay đổi | Ghi chú |
-|---|---|---|
-| 2026-11-10 | Tạo bản draft đầu tiên | Chưa có DB thật |
+| Cột | Ghi chú |
+|---|---|
+| `id` | PK |
+| `category_id` | FK → `categories.id` |
+| `name` | |
+| `description` | |
+| `import_price` | Giá nhập — cơ sở tính tiền vốn |
+| `selling_price` | Giá bán |
+| `stock_quantity` | Tồn kho |
+| `image_url` | |
+| `is_active` | Ẩn / ngừng bán |
+| `created_at` | |
+| `discount_price` | Giảm giá theo số tiền |
+| `discount_percent` | Giảm giá theo % |
+
+### `orders`
+
+| Cột | Ghi chú |
+|---|---|
+| `id` | PK |
+| `user_id` | FK → `users.id`; khách vãng lai có thể NULL (chưa chốt) |
+| `customer_name` | Lưu trực tiếp để hỗ trợ khách vãng lai |
+| `customer_phone` | |
+| `customer_address` | |
+| `note` | |
+| `total_amount` | Tổng tiền đơn |
+| `status` | `Pending` → `Shipping` → `Completed` / `Cancelled` |
+| `created_at` | |
+
+### `order_items`
+
+| Cột | Ghi chú |
+|---|---|
+| `id` | PK |
+| `order_id` | FK → `orders.id` |
+| `product_id` | FK → `products.id` |
+| `quantity` | |
+| `unit_price` | Giá bán **tại thời điểm đặt** |
+| `unit_import_price` | Giá nhập **tại thời điểm đặt** — dùng tính lợi nhuận |
+
+### `expenses`
+
+| Cột | Ghi chú |
+|---|---|
+| `id` | PK |
+| `title` | |
+| `amount` | |
+| `expense_date` | |
+| `note` | |
+
+## Quy tắc suy ra từ spec
+
+- `order_items` chụp lại giá bán + giá nhập tại thời điểm đặt → sửa giá sản phẩm sau này không làm sai báo cáo cũ.
+- Lợi nhuận ròng (AD-1) = doanh thu − tiền vốn (`unit_import_price`) − chi phí (`expenses`).
+- Đơn hàng lưu thông tin khách trực tiếp → hỗ trợ khách vãng lai.
+- Không có bảng phiếu nhập / nhà cung cấp: tồn kho được chỉnh qua cập nhật sản phẩm (AD-2).
+
+## Câu hỏi chưa chốt (T-007)
+
+1. `orders.user_id` của khách vãng lai: NULL hay tạo user ẩn?
+2. Có cả `discount_price` và `discount_percent`: ưu tiên cái nào? Cho phép nhập cả hai?
+3. Trừ `stock_quantity` lúc tạo đơn hay lúc chuyển `Completed`? Huỷ đơn có hoàn kho không?
+4. Xoá sản phẩm (AD-2): xoá cứng hay chỉ set `is_active = false`?
+5. DB engine + kiểu dữ liệu (ERD hiển thị schema `public` → gợi ý PostgreSQL, cần xác nhận).
+
+## Lịch sử thay đổi
+
+| Ngày | Thay đổi |
+|---|---|
+| 2026-11-10 | Nhập schema từ ERD file Word (7 bảng) |
