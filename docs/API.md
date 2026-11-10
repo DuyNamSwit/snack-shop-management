@@ -6,7 +6,7 @@
 ## Quy ước chung (v1.1)
 
 - Base URL: `/api` (dev: `http://localhost:<port>/api`).
-- **Auth:** JWT access token 8 giờ + refresh token 7 ngày (xoay vòng mỗi lần refresh), dùng chung Customer/Admin. Header `Authorization: Bearer <accessToken>`.
+- **Auth:** JWT access token 10 phút + refresh token 7 ngày (xoay vòng mỗi lần refresh), dùng chung Customer/Admin. Header `Authorization: Bearer <accessToken>`.
 - **Response OK:** `{ "success": true, "data": ..., "message": "..." }`
 - **Response lỗi:** `{ "success": false, "message": "...", "errors": [{ "field": "...", "message": "..." }] }`
 - **Danh sách:** `data = { items, page, pageSize, totalItems, totalPages }`

@@ -13,6 +13,24 @@
 
 -->
 
+## 2026-11-10 — Tạo bảng refresh_tokens + scaffold
+
+- **Làm:** đã chạy SQL tạo `refresh_tokens`; scaffold lại sinh entity `RefreshToken` (tổng 8 entity); build 0 warning/error.
+- **Tiếp theo:** T-011 JWT/CORS/static files.
+
+## 2026-11-10 — Chốt thời hạn token + bảng refresh_tokens
+
+- **Chốt:** access token **10 phút**, refresh token **7 ngày**; cập nhật `appsettings.json`, `API.md`, `CONVENTIONS.md`, `DECISIONS.md`.
+- **DB:** thêm script tạo `refresh_tokens` vào `DATABASE.md`; T-107 mở lại.
+- **Tiếp theo:** chạy SQL, re-scaffold entity `RefreshToken`, rồi T-011 JWT/CORS.
+
+## 2026-11-10 — Kết nối DB + scaffold DB-first
+
+- **Làm:** lưu connection string vào user-secrets; scaffold 7 entity + `AppDbContext` từ PostgreSQL `SnackShopManagementSystem`; đăng ký DbContext; build OK; `dotnet ef dbcontext info` xác nhận đúng DB.
+- **File:** `backend/SnackShop.Api/Data/AppDbContext.cs`, `Models/Entities/*`, `Program.cs`.
+- **Phát hiện:** DB chưa có bảng `refresh_tokens` (spec v1.1) → T-107 blocked.
+- **Tiếp theo:** T-011 JWT/CORS/static, T-101 auth.
+
 ## 2026-11-10 — Scaffold backend ASP.NET Core (DB-first)
 
 - **Làm:**

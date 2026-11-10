@@ -20,7 +20,7 @@
 ## API (đã chốt v1.1 — chi tiết ở `docs/API.md`)
 
 - REST, prefix `/api` (không version).
-- Auth: JWT access token 8 giờ + refresh token 7 ngày; header `Authorization: Bearer <accessToken>`.
+- Auth: JWT access token 10 phút + refresh token 7 ngày; header `Authorization: Bearer <accessToken>`.
 - Thành công: `{ "success": true, "data": ..., "message": "..." }`
 - Lỗi: `{ "success": false, "message": "...", "errors": [{ "field": "...", "message": "..." }] }`
 - Danh sách: `data = { items, page, pageSize, totalItems, totalPages }`; `page` mặc định 1, `pageSize` mặc định 20 (tối đa 100).

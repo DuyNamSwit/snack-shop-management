@@ -19,10 +19,10 @@ Quy tắc:
 | T-005 | Route/method API | api | done | Spec v1.1, xem API.md |
 | T-006 | Viết `docs/SETUP.md` | setup | done | Có lệnh chạy + scaffold DB-first |
 | T-007 | Chốt câu hỏi nghiệp vụ mở | product | done | D-004…D-010 |
-| T-008 | Scaffold DbContext + entities từ DB | database | blocked | Cần connection string; lệnh ở SETUP.md |
+| T-008 | Scaffold DbContext + entities từ DB | database | done | 8 entity (gồm `RefreshToken`) + AppDbContext |
 | T-009 | Đặc tả request/response body | api | todo | Ưu tiên AD-1, CUS-6, CUS-13 |
 | T-010 | Scaffold frontend | setup | blocked | Chờ chọn FE stack |
-| T-011 | Cấu hình DbContext + JWT + CORS + static files | setup | blocked | Sau T-008 |
+| T-011 | Cấu hình DbContext + JWT + CORS + static files | setup | doing | DbContext ✅; JWT/CORS/static chưa |
 
 ## Phase 1 — Customer Module
 
@@ -34,7 +34,7 @@ Quy tắc:
 | T-104 | Đặt hàng (CUS-6) | order | todo | Guest + user; trừ kho theo D-005 |
 | T-105 | Lịch sử + chi tiết đơn (CUS-7,8) | order | todo | Chỉ chủ đơn/Admin (D-008) |
 | T-106 | Hồ sơ + đổi mật khẩu (CUS-9,10) | user | todo | |
-| T-107 | Refresh token + logout (CUS-11,12) | auth | todo | Bảng `refresh_tokens` |
+| T-107 | Refresh token + logout (CUS-11,12) | auth | todo | Bảng `refresh_tokens` (SQL trong DATABASE.md) |
 | T-108 | Tra cứu đơn vãng lai + huỷ đơn (CUS-13,14) | order | todo | Rate limit lookup; hoàn kho |
 
 ## Phase 2 — Admin Module

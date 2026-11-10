@@ -7,7 +7,7 @@ Ghi lại **quyết định** kèm lý do, để sau này không phải đoán "
 | D-001 | 2026-11-10 | Dùng harness docs (`AGENTS.md` + `docs/`) làm nguồn ngữ cảnh cho AI | AI không quên giữa các phiên | Chỉ dựa vào chat; memory tool | accepted |
 | D-002 | 2026-11-10 | Tech stack: BE = ASP.NET Core (.NET 10); DB = PostgreSQL (Npgsql); FE = TBD | BE quen C#; DB đã có sẵn | SQL Server, Node, Spring Boot | **partial** |
 | D-003 | 2026-11-10 | Spec gốc (`docs/specs/*`) là nguồn sự thật | Yêu cầu gốc của user, tránh AI suy diễn | Giữ draft tự đề xuất | accepted |
-| D-004 | 2026-11-10 | Auth: JWT access 8h + refresh token 7d, bảng `refresh_tokens`, logout thu hồi, rotate khi refresh | Có logout/refresh đúng nghĩa, không lưu token thô | Access token dài hạn không refresh; session | accepted |
+| D-004 | 2026-11-10 | Auth: JWT access **10 phút** + refresh token **7 ngày**, bảng `refresh_tokens`, logout thu hồi, rotate khi refresh | Có logout/refresh đúng nghĩa, không lưu token thô; giữ đăng nhập 7 ngày | Access token dài hạn không refresh; session | accepted |
 | D-005 | 2026-11-10 | Trừ kho khi tạo đơn, hoàn khi huỷ; thiếu kho → 409; không sửa đơn; khách huỷ chỉ khi `Pending` | Chống bán quá tồn; đơn giản, không cần luồng sửa đơn | Trừ kho lúc `Completed`; cho sửa đơn | accepted |
 | D-006 | 2026-11-10 | Giá chụp tại thời điểm đặt; `total = Σ(unit_price × qty)`; COD; không phí ship/thuế; `discount_percent` ưu tiên hơn `discount_price` | Báo cáo cũ không lệch; demo đơn giản | Tính theo giá hiện tại; cộng phí ship | accepted |
 | D-007 | 2026-11-10 | Sản phẩm xoá mềm (`is_active=false`); danh mục chặn xoá nếu còn sản phẩm; chi phí xoá cứng; user chỉ khoá/mở | Giữ lịch sử đơn; tránh mất dữ liệu | Xoá cứng tất cả | accepted |
